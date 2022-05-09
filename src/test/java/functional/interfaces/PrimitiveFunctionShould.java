@@ -33,4 +33,20 @@ public class PrimitiveFunctionShould {
         // ToDoubleFunction<Boolean> toDoubleFunction;
         // ToLongFunction<Long> toLongFunction;
     }
+
+    @Test
+    void give_a_primitive_type_as_input_and_output() {
+        int var = 1;
+
+        IntToLongFunction intToLongFunction = integer -> Long.valueOf(integer).longValue();
+        final long result = intToLongFunction.applyAsLong(var);
+
+        assertThat(result).isEqualTo(1L);
+
+        // IntToDoubleFunction intToDoubleFunction;
+        // DoubleToIntFunction doubleToIntFunction;
+        // DoubleToLongFunction doubleToLongFunction;
+        // LongToDoubleFunction longToDoubleFunction;
+        // LongToIntFunction longToIntFunction;
+    }
 }
