@@ -6,7 +6,7 @@ import java.util.function.UnaryOperator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UnaryOperatorFunction {
+public class UnaryOperatorShould {
 
     @Test
     void has_the_same_type_as_entry_and_output() {
