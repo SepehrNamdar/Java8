@@ -29,6 +29,7 @@ public class StreamOperatorShould {
         final List<Player> topScorerWhereNameContainsAli = players.stream()
                 .filter(topScorer)
                 .filter(nameIsAli)
+                .distinct()     // Dade tekrari ra hazf mikonad
                 .collect(toList());
 
         final List<Player> aliDaei = new LinkedList<>();
@@ -41,6 +42,7 @@ public class StreamOperatorShould {
         Function<? super Player, ?> function = Player::getName;
         final List<?> playerNames = players.stream()
                 .map(function)
+                .distinct()     // Dade tekrari ra hazf mikonad
                 .collect(toList());
 
         final List<String> expectedResult = new LinkedList<>();
