@@ -16,7 +16,7 @@ import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StreamOperatorShould {
+public class IntermediateOperatorShould {
 
     private List<Player> players;
 
