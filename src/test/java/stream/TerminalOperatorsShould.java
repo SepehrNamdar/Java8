@@ -68,4 +68,18 @@ public class TerminalOperatorsShould {
         assertThat(summary.getMin()).isEqualTo(84);
         assertThat(summary.getCount()).isEqualTo(5);
     }
+
+    @Test
+    void group_data() {
+        Function<Player, String> playerName = Player::getName;
+        final Map<String, Long> groupedPlayers = players.stream()
+                .collect(groupingBy(playerName, counting()));
+        groupedPlayers.forEach((k, v) -> out.println("player is " + k + " and has " + v + " occurrences"));
+
+        assertThat(groupedPlayers)
+                .containsEntry("Ali Daei", 2L)
+                .containsEntry("Cristiano Ronaldo", 1L)
+                .containsEntry("Ferenc Puskás", 1L)
+                .containsEntry("Mokhtar Dahari", 1L);
+    }
 }
