@@ -6,10 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 import static java.lang.System.out;
@@ -81,5 +78,29 @@ public class TerminalOperatorsShould {
                 .containsEntry("Cristiano Ronaldo", 1L)
                 .containsEntry("Ferenc Puskás", 1L)
                 .containsEntry("Mokhtar Dahari", 1L);
+    }
+
+    @Test
+    void reduce_data() {
+        BinaryOperator<Integer> sumOfGoals = Integer::sum;
+        final Integer totalGoals = players.stream().map(Player::getGoal).reduce(0, sumOfGoals);
+
+        assertThat(totalGoals).isEqualTo(506);
+
+        final String formattedNames = players.stream()
+                .map(Player::getName)
+                .reduce("", this::format)
+                .replaceFirst("\\|", "")
+                .trim();
+
+        assertThat(formattedNames)
+                .isEqualTo("Ali DAEI | Ali DAEI | Cristiano RONALDO | Ferenc PUSKÁS | Mokhtar DAHARI");
+    }
+
+    private String format(String res, String playerName) {
+        final String separator = " ";
+        final String firstName = playerName.split(separator)[0];
+        final String lastName = playerName.split(separator)[1];
+        return res + " | " + firstName + separator + lastName.toUpperCase();
     }
 }
