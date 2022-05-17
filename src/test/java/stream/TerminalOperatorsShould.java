@@ -38,7 +38,7 @@ public class TerminalOperatorsShould {
 
     @Test
     void calculate_data() {
-        final Stream<Integer> goals = players.stream().map(Player::getGoal);
+        final Stream<Integer> goals = playerGoals();
         ToIntFunction<Integer> intConverter = Integer::valueOf;
 
         final Integer sum = goals.mapToInt(intConverter).sum();
@@ -78,6 +78,27 @@ public class TerminalOperatorsShould {
                 .containsEntry("Cristiano Ronaldo", 1L)
                 .containsEntry("Ferenc Puskás", 1L)
                 .containsEntry("Mokhtar Dahari", 1L);
+    }
+
+    @Test
+    void match_data() {
+        Predicate<? super Integer> moreThan50goals = goal -> goal >= 50;
+        final boolean allPlayersScoredMoreThan50 = playerGoals().allMatch(moreThan50goals);
+
+        assertThat(allPlayersScoredMoreThan50).isTrue();
+
+        final boolean anyPlayersScoredMoreThan50 = playerGoals().anyMatch(moreThan50goals);
+
+        assertThat(anyPlayersScoredMoreThan50).isTrue();
+
+        final boolean nonPlayersScoredMoreThan50 = playerGoals().noneMatch(moreThan50goals);
+
+        assertThat(nonPlayersScoredMoreThan50).isFalse();
+    }
+
+    private Stream<Integer> playerGoals() {
+        return players.stream()
+                .map(Player::getGoal);
     }
 
     @Test
