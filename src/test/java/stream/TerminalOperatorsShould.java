@@ -38,7 +38,7 @@ public class TerminalOperatorsShould {
 
     @Test
     void calculate_data() {
-        final Stream<Integer> goals = playerGoals();
+        final Stream<Integer> goals = players.stream().map(Player::getGoal);
         ToIntFunction<Integer> intConverter = Integer::valueOf;
 
         final Integer sum = goals.mapToInt(intConverter).sum();
@@ -82,23 +82,40 @@ public class TerminalOperatorsShould {
 
     @Test
     void match_data() {
+        final Stream<Integer> playerGoals = players.stream().map(Player::getGoal);
         Predicate<? super Integer> moreThan50goals = goal -> goal >= 50;
-        final boolean allPlayersScoredMoreThan50 = playerGoals().allMatch(moreThan50goals);
+
+        final boolean allPlayersScoredMoreThan50 = playerGoals.allMatch(moreThan50goals);
 
         assertThat(allPlayersScoredMoreThan50).isTrue();
 
-        final boolean anyPlayersScoredMoreThan50 = playerGoals().anyMatch(moreThan50goals);
+        final boolean anyPlayersScoredMoreThan50 = playerGoals.anyMatch(moreThan50goals);
 
         assertThat(anyPlayersScoredMoreThan50).isTrue();
 
-        final boolean nonPlayersScoredMoreThan50 = playerGoals().noneMatch(moreThan50goals);
+        final boolean nonPlayersScoredMoreThan50 = playerGoals.noneMatch(moreThan50goals);
 
         assertThat(nonPlayersScoredMoreThan50).isFalse();
     }
 
-    private Stream<Integer> playerGoals() {
-        return players.stream()
-                .map(Player::getGoal);
+    @Test
+    void find_data() {
+        final Optional<String> firstScorer = players.stream()
+                .filter(player -> player.getGoal() < 100)
+                .map(Player::getName)
+                .findFirst();
+
+        assertThat(firstScorer.get()).isEqualTo("Ferenc Puskás");
+
+        final Optional<String> anyScorer = players.stream()
+                .filter(player -> player.getGoal() < 100)
+                .map(Player::getName)
+                .findAny();
+
+        assertThat(anyScorer.get()).satisfiesAnyOf(
+                player -> player.equals("Ferenc Puskás"),
+                player -> player.equals("Mokhtar Dahari")
+        );
     }
 
     @Test
