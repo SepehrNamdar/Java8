@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 import static java.util.Comparator.reverseOrder;
@@ -98,5 +99,18 @@ public class IntermediateOperatorShould {
         final List<Integer> expectedResult_3 = new LinkedList<>();
         expectedResult_3.add(89);
         assertThat(fourthReversedSortedScoredGoals).isEqualTo(expectedResult_3);
+    }
+
+    @Test
+    void be_lazy() {    // farakhani tanbal
+        final List<Integer> goals = players.stream()
+                .map(Player::getGoal)
+                .peek(goal -> out.println("Scored goal is " + goal))
+                .filter(goal -> goal < 50)  // Az inja be bad dige kod ejra nemishe
+                .peek(goal -> out.println("Never Happen"))
+                .map(goal -> goal * 2)
+                .collect(toList());
+
+        assertThat(goals).isEmpty();
     }
 }
