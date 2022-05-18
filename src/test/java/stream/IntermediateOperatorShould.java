@@ -1,6 +1,7 @@
 package stream;
 
 import football.player.Player;
+import football.player.PlayersWithCups;
 import helper.PlayerTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,9 +11,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static java.lang.System.out;
+import static java.util.Arrays.asList;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,6 +58,27 @@ public class IntermediateOperatorShould {
         expectedResult.add("Ferenc Puskás");
         expectedResult.add("Mokhtar Dahari");
         assertThat(playerNames).isEqualTo(expectedResult);
+    }
+
+    @Test
+    void handle_complex_objects() {
+        final List<PlayersWithCups> playersWithCups = new PlayerTestHelper().getPlayersWithCups();
+
+        final List<List<String>> byMap = playersWithCups.stream()
+                .filter(pwc -> pwc.getName().contains("Ali"))
+                .map(PlayersWithCups::getCups)
+                .collect(toList());
+        byMap.forEach(out::println);
+
+        assertThat(byMap).contains(asList("Bundes Liga", "Azadegan"));
+
+        final List<String> byFlatMap = playersWithCups.stream()
+                .filter(pwc -> pwc.getName().contains("Ali"))
+                .flatMap(p -> p.getCups().stream())
+                .collect(toList());
+        byFlatMap.forEach(out::println);
+
+        assertThat(byFlatMap).contains("Bundes Liga", "Azadegan");
     }
 
     @Test
