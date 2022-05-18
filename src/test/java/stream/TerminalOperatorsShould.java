@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.function.*;
-import java.util.stream.Stream;
 
 import static java.lang.System.out;
 import static java.util.Comparator.naturalOrder;
@@ -38,26 +37,25 @@ public class TerminalOperatorsShould {
 
     @Test
     void calculate_data() {
-        final Stream<Integer> goals = players.stream().map(Player::getGoal);
         ToIntFunction<Integer> intConverter = Integer::valueOf;
 
-        final Integer sum = goals.mapToInt(intConverter).sum();
+        final Integer sum = players.stream().map(Player::getGoal).mapToInt(intConverter).sum();
 
         assertThat(sum).isEqualTo(506);
 
-        final Double average = goals.collect(averagingInt(intConverter));
+        final Double average = players.stream().map(Player::getGoal).collect(averagingInt(intConverter));
 
         assertThat(average).isEqualTo(101.2);
 
-        final Optional<Integer> maxGoalScorer = goals.max(naturalOrder());
+        final Optional<Integer> maxGoalScorer = players.stream().map(Player::getGoal).max(naturalOrder());
 
         assertThat(maxGoalScorer.get()).isEqualTo(115);
 
-        final Long numberOfElements = goals.count();
+        final Long numberOfElements = players.stream().map(Player::getGoal).count();
 
         assertThat(numberOfElements).isEqualTo(5);
 
-        final IntSummaryStatistics summary = goals.collect(summarizingInt(intConverter));
+        final IntSummaryStatistics summary = players.stream().map(Player::getGoal).collect(summarizingInt(intConverter));
 
         assertThat(summary.getSum()).isEqualTo(506);
         assertThat(summary.getAverage()).isEqualTo(101.2);
@@ -82,18 +80,23 @@ public class TerminalOperatorsShould {
 
     @Test
     void match_data() {
-        final Stream<Integer> playerGoals = players.stream().map(Player::getGoal);
         Predicate<? super Integer> moreThan50goals = goal -> goal >= 50;
 
-        final boolean allPlayersScoredMoreThan50 = playerGoals.allMatch(moreThan50goals);
+        final boolean allPlayersScoredMoreThan50 = players.stream()
+                .map(Player::getGoal)
+                .allMatch(moreThan50goals);
 
         assertThat(allPlayersScoredMoreThan50).isTrue();
 
-        final boolean anyPlayersScoredMoreThan50 = playerGoals.anyMatch(moreThan50goals);
+        final boolean anyPlayersScoredMoreThan50 = players.stream()
+                .map(Player::getGoal)
+                .anyMatch(moreThan50goals);
 
         assertThat(anyPlayersScoredMoreThan50).isTrue();
 
-        final boolean nonPlayersScoredMoreThan50 = playerGoals.noneMatch(moreThan50goals);
+        final boolean nonPlayersScoredMoreThan50 = players.stream()
+                .map(Player::getGoal)
+                .noneMatch(moreThan50goals);
 
         assertThat(nonPlayersScoredMoreThan50).isFalse();
     }
