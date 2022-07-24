@@ -3,6 +3,7 @@ package optional;
 import football.team.Coach;
 import football.team.Degree;
 import football.team.Team;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -62,6 +63,16 @@ public class OptionalShould {
         result = Optional.ofNullable(name).orElseGet(this::getDefaultName);
         out.println(result);
         assertThat(result).isEqualTo("Ahmad");
+    }
+
+    @Test
+    void handle_errors() {
+        String name = null;
+
+        final ThrowingCallable result = () -> Optional.ofNullable(name)
+                .orElseThrow(() -> new IllegalArgumentException("name should not be null"));
+
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(result);
     }
 
     private String getDefaultName() {
