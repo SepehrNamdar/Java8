@@ -1,10 +1,16 @@
 package football.team;
 
+import java.util.Optional;
+
 public class Coach {
 
-    private Degree degree;
+    private final Degree degree;
 
-    public Degree getDegree() {
-        return degree;
+    public Coach(Degree degree) {
+        this.degree = degree;
+    }
+
+    public Optional<Degree> getDegree() {
+        return Optional.ofNullable(degree);
     }
 }
