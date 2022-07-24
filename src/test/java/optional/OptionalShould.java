@@ -5,7 +5,10 @@ import football.team.Degree;
 import football.team.Team;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class OptionalShould {
 
@@ -31,5 +34,18 @@ public class OptionalShould {
                 .flatMap(Coach::getDegree)
                 .map(Degree::getValue)
                 .ifPresent(value -> assertThat(value).isEqualTo("A"));
+    }
+
+    @Test
+    void be_created() {
+        String name = "Ahmad";
+        assertThat(Optional.of(name).get()).isEqualTo("Ahmad");
+
+        name = null;
+        String finalName = name;
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> Optional.of(finalName));
+        //assertThat(Optional.of(name).get()).isEqualTo("Ahmad"); --> NPE !
+
+        assertThat(Optional.ofNullable(name)).isEmpty();         // --> NPE nadarim
     }
 }
