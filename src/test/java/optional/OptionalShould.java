@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static java.lang.System.out;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -47,5 +48,24 @@ public class OptionalShould {
         //assertThat(Optional.of(name).get()).isEqualTo("Ahmad"); --> NPE !
 
         assertThat(Optional.ofNullable(name)).isEmpty();         // --> NPE nadarim
+    }
+
+    @Test
+    void have_default_values() {
+        String name = "Ahmad";
+        out.println("orElse :");
+        String result = Optional.ofNullable(name).orElse(getDefaultName());
+        out.println(result);
+        assertThat(result).isEqualTo("Ahmad");
+
+        out.println("orElseGet :");
+        result = Optional.ofNullable(name).orElseGet(this::getDefaultName);
+        out.println(result);
+        assertThat(result).isEqualTo("Ahmad");
+    }
+
+    private String getDefaultName() {
+        out.println("default name called");
+        return "No name";
     }
 }
