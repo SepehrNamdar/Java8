@@ -3,9 +3,7 @@ package time;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -61,5 +59,20 @@ public class DateAndTimeShould {
 
         // Then
         assertThat(isWeekend).isTrue();
+    }
+
+    @Test
+    void get_tehran_time() {
+        final ZonedDateTime parisTime = ZonedDateTime.now();
+        out.println(parisTime.toLocalDateTime());
+        out.println(ZoneId.getAvailableZoneIds());
+        final ZonedDateTime tehranTime = parisTime.withZoneSameInstant(ZoneId.of("Asia/Tehran"));
+        out.println(tehranTime.toLocalDateTime());
+
+        final OffsetDateTime now = OffsetDateTime.now();
+        out.println(now.toLocalDateTime());
+        out.println(ZoneOffset.getAvailableZoneIds());
+        final OffsetDateTime tehranTimeWithOffset = now.withOffsetSameInstant(ZoneOffset.of("+04:30"));
+        out.println(tehranTimeWithOffset.toLocalDateTime());
     }
 }
