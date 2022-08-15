@@ -1,9 +1,9 @@
 package time;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -74,5 +74,12 @@ public class DateAndTimeShould {
         out.println(ZoneOffset.getAvailableZoneIds());
         final OffsetDateTime tehranTimeWithOffset = now.withOffsetSameInstant(ZoneOffset.of("+04:30"));
         out.println(tehranTimeWithOffset.toLocalDateTime());
+    }
+
+    @Test
+    void change_date_format() {
+        final LocalDateTime now = LocalDateTime.now();
+        out.println(now.format(DateTimeFormatter.ISO_WEEK_DATE));
+        out.println(now.format(DateTimeFormatter.ofPattern("dd/MM/yy")));
     }
 }
