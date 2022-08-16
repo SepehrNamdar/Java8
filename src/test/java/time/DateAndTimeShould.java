@@ -82,4 +82,23 @@ public class DateAndTimeShould {
         out.println(now.format(DateTimeFormatter.ISO_WEEK_DATE));
         out.println(now.format(DateTimeFormatter.ofPattern("dd/MM/yy")));
     }
+
+    @Test
+    void compare_dates() {
+        final LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime nowPlusFiveDays = now.plusDays(5);
+
+        assertThat(now.isBefore(nowPlusFiveDays)).isTrue();
+        assertThat(nowPlusFiveDays.isAfter(now)).isTrue();
+        assertThat(nowPlusFiveDays.isEqual(now)).isFalse();
+
+        final Duration duration = Duration.between(now, nowPlusFiveDays);
+        assertThat(duration).isEqualTo(Duration.ofDays(5));
+
+        final LocalDate nowDate = LocalDate.now();
+        final LocalDate nowDatePlusFiveDays = nowDate.plusDays(5);
+        final Period period = Period.between(nowDate, nowDatePlusFiveDays);
+        final int difference = period.getDays();
+        assertThat(difference).isEqualTo(5);
+    }
 }
